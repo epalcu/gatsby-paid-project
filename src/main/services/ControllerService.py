@@ -12,4 +12,6 @@ class ControllerService():
     # Public Methods
     #
     def registerControllers(self):
-        self.gatsbyController.register(self.app, route_base='/')
+        self.gatsbyController.register(
+            self.app, 
+            route_base='/')

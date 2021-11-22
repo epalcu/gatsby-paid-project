@@ -1,4 +1,5 @@
 import json
+import time
 import redis
 from config.RedisConfig import RedisConfig
 
@@ -18,22 +19,39 @@ class RedisService():
     #
     # Public Methods
     #
-    def getCustomerRateForEndpoint(self, customerId, endpoint):
-        rate = json.loads(self.service.get(customerId))['api'][endpoint]['rate']
+    def getCustomerDetails(self, customerId):
+        try:
+            customerDetails = json.loads(self.service.get(customerId))
+
+            print('Returning customer details: {0}'.format(customerDetails))
+
+            return json.dumps(customerDetails)
+        except Exception as e:
+            print('Customer details not found: {0}'.format(e))
+            return None
+
+    def incrementCustomerEndpointCounter(self, customerId, endpoint):
+        try:
+            customerDetails = json.loads(self.service.get(customerId))
+            count = customerDetails['api'][endpoint]['count']
         
-        print('getCustomerRateForEndpoint() - customerId={0}, endpoint={1}, rate={2}'.format(
-            customerId, 
-            endpoint, 
-            rate))
+            print('incrementCustomerEndpointCounter() - customerId={0}, endpoint={1}, count={2}'.format(
+                customerId, 
+                endpoint, 
+                count))
 
-        return rate
+            count += 1
 
-    def getCustomerUnitForEndpoint(self, customerId, endpoint):
-        unit = json.loads(self.service.get(customerId))['api'][endpoint]['unit']
+            print('Incrementing enpoint counter - customerId={0}, endpoint={1}, count={2}'.format(
+                customerId, 
+                endpoint, 
+                count))
 
-        print('getCustomerUnitForEndpoint() - customerId={0}, endpoint={1}, unit={2}'.format(
-            customerId, 
-            endpoint, 
-            unit))
+            customerDetails['api'][endpoint]['count'] = count
+            customerDetails['api'][endpoint]['timestampOfLastRequest'] = time.time()
+            self.service.set(customerId, json.dumps(customerDetails))
 
-        return unit
+            return count
+        except Exception as e:
+            print('Customer counter could not be incremented: {0}'.format(e))
+            return e

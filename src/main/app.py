@@ -12,13 +12,9 @@ if __name__ == '__main__':
     local = '127.0.0.1'
 
     app = Flask(__name__)
-
-    redisService = RedisService()
-
-    for cid in [1, 2, 3]:
-        redisService.getCustomerRateForEndpoint(str(cid), 'gatsby')
+    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 
     controllerService = ControllerService(app)
     controllerService.registerControllers()
         
-    app.run(debug=True, host=local)#, threaded=True)
+    app.run(debug=True, host=local, threaded=True)

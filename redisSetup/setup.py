@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import json
+import time
 import redis
 
 redisHost = 'localhost'
@@ -23,7 +24,9 @@ if __name__ == '__main__':
                         'api': {
                             'gatsby': {
                                 'rate': 10*cid,
-                                'unit': 'min'
+                                'unit': 'min',
+                                'count': 0,
+                                'timestampOfLastRequest': str(time.time())
                             }
                         }
                     })
