@@ -1,14 +1,12 @@
 import json
 import time
 import redis
-from config.RedisConfig import RedisConfig
 
 class RedisService():
     #
     # Constructor
     #
-    def __init__(self):
-        redisConfig = RedisConfig()
+    def __init__(self, redisConfig):
         self.service = redis.StrictRedis(
             host=redisConfig.getHost(), 
             port=redisConfig.getPort(), 

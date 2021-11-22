@@ -1,4 +1,4 @@
-
+from config.RedisConfig import RedisConfig
 from flask_classful import FlaskView, route
 from services.RedisService import RedisService
 from flask import make_response, redirect, render_template, request, jsonify
@@ -8,10 +8,10 @@ class GatsbyController(FlaskView):
     # Constructor
     #
     def __init__(self):
-        self.redisService = RedisService()
-        # for cid in [1, 2, 3]:
-        #     self.redisService.getCustomerRateForEndpoint(str(cid), 'gatsby')
-        return
+        # TODO: Ideally, this would be injected through the constructor;
+        # However, the FlaskView module doesn't allow to pass arguments
+        # when registering new controllers
+        self.redisService = RedisService(RedisConfig())
 
     #
     # Routes
