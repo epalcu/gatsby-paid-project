@@ -16,8 +16,6 @@ if __name__ == '__main__':
             password=redisPassword, 
             decode_responses=True)
    
-        print('Populating local Redis cluster with the following key-value pairs: ')
-
         customerIds = [1, 2, 3]
         for cid in customerIds:
             # NOTE: Setting unit just to demonstrate how a user's unit of measure
