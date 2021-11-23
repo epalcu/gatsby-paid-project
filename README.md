@@ -33,6 +33,6 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 2. Application design walkthrough:
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=q1gOSon5cm8" 
-target="_blank"><img src="http://img.youtube.com/vi/q1gOSon5cm8/0.jpg" 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=pF23Sdvx_5Q" 
+target="_blank"><img src="http://img.youtube.com/vi/pF23Sdvx_5Q/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
