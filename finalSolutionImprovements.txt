@@ -15,6 +15,7 @@ Final Solution Improvements:
 • Add Constants.py file to have service constants instead of writing out key strings 	like ‘api’, ’count’, ‘requests’, etc.
 • Add environment-specific configuration files that are read in by application.
 • Store passwords in remote location, like AWS Secrets Manager
+• Better commenting - All of "NOTE" comments were simply added to provide context as to what I would do differently in the correct solution or what the drawbacks are of the current, time-boxed solution.
 
 That’s everything I can think of now!! :D
 
