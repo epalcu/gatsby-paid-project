@@ -1,6 +1,7 @@
 from config.RedisConfig import RedisConfig
 from flask_classful import FlaskView, route
 from services.RedisService import RedisService
+from services.RateLimitService import RateLimitService
 from flask import make_response, redirect, render_template, request, jsonify
 
 class GatsbyController(FlaskView):
@@ -8,10 +9,11 @@ class GatsbyController(FlaskView):
     # Constructor
     #
     def __init__(self):
-        # TODO: Ideally, this would be injected through the constructor;
+        # NOTE: Ideally, this would be injected through the constructor;
         # However, the FlaskView module doesn't allow to pass arguments
         # when registering new controllers
         self.redisService = RedisService(RedisConfig())
+        self.rateLimitervice = RateLimitService(self.redisService)
 
     #
     # Routes
@@ -20,22 +22,29 @@ class GatsbyController(FlaskView):
     def index(self):
         return make_response(redirect('/gatsby'), 302)
 
+    #
+    # /gatsby route which takes in x-customer-id header to track user's request count
+    #
     @route('/gatsby', methods=['POST'])
     def gatsby(self):
         customerId = request.headers.get('x-customer-id')
         endpoint = 'gatsby'
 
-        count = 'The invalid request is missing x-customer-id header.'
         if (customerId):
-            count = self.redisService.incrementCustomerEndpointCounter(customerId, endpoint)
-            if (type(count) is int):
-                return make_response(render_template('gatsby.html', 
-                    customerId=customerId,
-                    endpoint=endpoint,
-                    count=count), 200)
+            if (self.rateLimitervice.isWithinRateWindow(customerId, endpoint)):
+                return make_response(render_template('gatsby.html', customerId=customerId), 200)
+            
+            message = 'Hello, Gatsby customer {0}! You have exceeded your allowable request count for the \'/{1}\' endpoint'.format(customerId, endpoint)
+            statusCode = 429
+        else:
+            message = 'The invalid request is missing x-customer-id header.'
+            statusCode = 404
 
-        return make_response(jsonify(message=str(count)), 404)
+        return make_response(jsonify(message=message), statusCode)
 
+    #
+    # /gatsbyStats route which takes in customerId query parameter to display user's request count details
+    #
     @route('gatsbyStats')
     def gatsbyStats(self):
         customerId = request.args.get('customerId')

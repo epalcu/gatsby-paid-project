@@ -23,33 +23,16 @@ class RedisService():
 
             print('Returning customer details: {0}'.format(customerDetails))
 
-            return json.dumps(customerDetails)
+            return customerDetails
         except Exception as e:
             print('Customer details not found: {0}'.format(e))
             return None
 
-    def incrementCustomerEndpointCounter(self, customerId, endpoint):
+    def setCustomerDetails(self, customerId, customerDetails):
         try:
-            customerDetails = json.loads(self.service.get(customerId))
-            count = customerDetails['api'][endpoint]['count']
-        
-            print('incrementCustomerEndpointCounter() - customerId={0}, endpoint={1}, count={2}'.format(
-                customerId, 
-                endpoint, 
-                count))
+            print('Setting customer details: {0}'.format(customerDetails))
 
-            count += 1
-
-            print('Incrementing enpoint counter - customerId={0}, endpoint={1}, count={2}'.format(
-                customerId, 
-                endpoint, 
-                count))
-
-            customerDetails['api'][endpoint]['count'] = count
-            customerDetails['api'][endpoint]['timestampOfLastRequest'] = time.time()
             self.service.set(customerId, json.dumps(customerDetails))
-
-            return count
         except Exception as e:
-            print('Customer counter could not be incremented: {0}'.format(e))
-            return e
+            print('Customer details cound not be set: {0}'.format(e))
+            return None

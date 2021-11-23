@@ -4,9 +4,9 @@ from flask import Flask
 from services.RedisService import RedisService
 from services.ControllerService import ControllerService
 
-###################################
-# Main function where app is run. #
-###################################
+#
+# Main function where app is run
+#
 if __name__ == '__main__':
     public = '0.0.0.0'
     local = '127.0.0.1'

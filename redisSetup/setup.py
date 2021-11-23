@@ -20,17 +20,19 @@ if __name__ == '__main__':
 
         customerIds = [1, 2, 3]
         for cid in customerIds:
+            # NOTE: Setting unit just to demonstrate how a user's unit of measure
+            # cna be configured to something other than minutes; however, not
+            # using the unit value throughout the service just to save time
             value = json.dumps({
                         'api': {
                             'gatsby': {
                                 'rate': 10*cid,
-                                'unit': 'min',
+                                'unit': 'min', 
                                 'count': 0,
-                                'timestampOfLastRequest': str(time.time())
+                                'requests': []
                             }
                         }
                     })
-            print('{0} -> {1}'.format(cid, value))
             redisObject.set(str(cid), value)
 
         print('\r\nLocal Redis cluster populated with the following key-value pairs: ')
