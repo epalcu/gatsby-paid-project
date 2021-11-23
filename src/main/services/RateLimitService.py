@@ -17,7 +17,7 @@ class RateLimitService():
         rate = self._getCustomerEndpointRate(customerDetails, endpoint)
         count = self._getCustomerEndpointCount(customerDetails, endpoint)
 
-        # If new count is greater than customer's rate, we only check the first
+        # NOTE: If new count is greater than customer's rate, we only check the first
         # request in the requests list. Maintaining a count key is much more efficent 
         # than running len(requests), especially if the rate is increased to 
         # something like 3000 requests/second
