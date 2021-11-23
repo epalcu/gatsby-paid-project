@@ -17,19 +17,17 @@ class RateLimitService():
         rate = self._getCustomerEndpointRate(customerDetails, endpoint)
         count = self._getCustomerEndpointCount(customerDetails, endpoint)
 
-        # If new count is greater than customer's rate, we now have to evaluate
-        # the requests list and check timestamps to see if we can start discarding
-        # requests
+        # If new count is greater than customer's rate, we only check the first
+        # request in the requests list. Maintaining a count key is much more efficent 
+        # than running len(requests), especially if the rate is increased to 
+        # something like 3000 requests/second
         if (count+1 > rate):
-            # Don't even traverse requests list if first request is within rate window
-            if (self._isWithinRateWindow(requests[0])):
+            firstRequest = requests[0]
+            if (self._isWithinRateWindow(firstRequest)):
                 return False
-
-            # Start traversing requests list and discard requests that are greater than 1 min
-            for request in requests[:]:
-                if (not self._isWithinRateWindow(request)):
-                    count -= 1
-                    requests.remove(request)
+            else:
+                count -= 1
+                requests.remove(firstRequest)
         
         count += 1
         requests.append(time.time())
