@@ -1,5 +1,7 @@
 # gatsby-paid-project
 
+This application implements a rate limit for a single API endpoint.
+
 ## Steps to start locally
 
 1. Clone repo
