@@ -13,4 +13,4 @@
 
 1. Open up Postman
 2. Add `http://127.0.0.1:5000/gatsbyStats?customerId=1` to request URL
-'''This will display the Redis details for customer 1. Please ensure you run this as a POST request.
+⋅⋅⋅This will display the Redis details for customer 1. Please ensure you run this as a POST request.
