@@ -13,9 +13,10 @@
 
 1. Open up Postman
 2. Add `http://127.0.0.1:5000/gatsbyStats?customerId=1` to request URL
-  *This endpoint displays the Redis details for customer 1. 
-  *Please ensure you run this as a GET request.
+  * This endpoint displays the Redis details for customer 1. 
+  * Please ensure you run this as a GET request.
+  
 3. Add `http://127.0.0.1:5000/gatsby` to request URL
-  *This endpoint has the rate limiting enforced. 
-  *Please include `x-customer-id` header to the request.
-  *Please ensure you run this as a POST request.
+  * This endpoint has the rate limiting enforced. 
+  * Please include `x-customer-id` header to the request.
+  * Please ensure you run this as a POST request.
