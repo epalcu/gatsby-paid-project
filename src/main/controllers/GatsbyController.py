@@ -31,13 +31,13 @@ class GatsbyController(FlaskView):
         endpoint = 'gatsby'
 
         if (customerId):
-            if (self.rateLimitervice.isWithinRateWindow(customerId, endpoint)):
+            if (self.rateLimitervice.isWithinRateLimit(customerId, endpoint)):
                 return make_response(render_template('gatsby.html', customerId=customerId), 200)
             
             message = 'Hello, Gatsby customer {0}! You have exceeded your allowable request count for the \'/{1}\' endpoint'.format(customerId, endpoint)
             statusCode = 429
         else:
-            message = 'The invalid request is missing x-customer-id header.'
+            message = 'The request is missing x-customer-id header.'
             statusCode = 404
 
         return make_response(jsonify(message=message), statusCode)
@@ -49,14 +49,14 @@ class GatsbyController(FlaskView):
     def gatsbyStats(self):
         customerId = request.args.get('customerId')
 
-        customerDetails = 'The invalid request is missing customerId query parameter.'
+        message = 'The request is missing customerId query parameter.'
         if (customerId):
             customerDetails = self.redisService.getCustomerDetails(customerId)
             if (customerDetails):
                 return make_response(render_template('gatsbyStats.html', customerDetails=customerDetails), 200)
             else:
-                customerDetails = 'Please provide a valid customerId value.'
+                message = 'Please provide a valid customerId value.'
 
-        return make_response(render_template('gatsbyStats.html', customerDetails=customerDetails), 404)
+        return make_response(jsonify(message=message), 404)
 
         

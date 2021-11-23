@@ -29,10 +29,5 @@ class RedisService():
             return None
 
     def setCustomerDetails(self, customerId, customerDetails):
-        try:
-            print('Setting customer details: {0}'.format(customerDetails))
-
-            self.service.set(customerId, json.dumps(customerDetails))
-        except Exception as e:
-            print('Customer details cound not be set: {0}'.format(e))
-            return None
+        print('Setting customer details: {0}'.format(customerDetails))
+        self.service.set(customerId, json.dumps(customerDetails))

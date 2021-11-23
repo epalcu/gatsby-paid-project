@@ -11,7 +11,7 @@ class RateLimitService():
     #
     # Public Methods
     #
-    def isWithinRateWindow(self, customerId, endpoint):
+    def isWithinRateLimit(self, customerId, endpoint):
         customerDetails = self.redisService.getCustomerDetails(customerId)
         requests = self._getCustomerEndpointRequests(customerDetails, endpoint)
         rate = self._getCustomerEndpointRate(customerDetails, endpoint)
@@ -23,14 +23,14 @@ class RateLimitService():
         # something like 3000 requests/second
         if (count+1 > rate):
             firstRequest = requests[0]
-            if (self._isWithinRateWindow(firstRequest)):
+            if (self._isOutsideRateLimit(firstRequest)):
                 return False
             else:
                 count -= 1
                 requests.remove(firstRequest)
         
         count += 1
-        requests.append(time.time())
+        requests.append(int(time.time()))
 
         customerDetails['api'][endpoint]['requests'] = requests
         customerDetails['api'][endpoint]['count'] = count
@@ -53,6 +53,6 @@ class RateLimitService():
     # NOTE: I'm defaulting the value to 60 secons (1 min); however,
     # the ideal solution would pass in the configured unit of measure
     # for this particular user
-    def _isWithinRateWindow(self, requestTimestamp):
-        currentTime = time.time()
+    def _isOutsideRateLimit(self, requestTimestamp):
+        currentTime = int(time.time())
         return currentTime - 60 < requestTimestamp
